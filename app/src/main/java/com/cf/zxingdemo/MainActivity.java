@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -50,7 +51,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (view.getId()){
             case R.id.btn1:
                 try {
+
                     String content = et_content.getText().toString();
+                    if(TextUtils.isEmpty(content)){
+                        Toast.makeText(MainActivity.this,"内容不能为空！", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     //生成二维码图片，第一个参数是二维码的内容，第二个参数是正方形图片的边长，单位是像素
                     Bitmap qrCodeBitmap = EncodingHandler.createQRCode(content, DensityUtil.dp2px(this,200));
                     mImageView.setImageBitmap(qrCodeBitmap);
@@ -105,7 +111,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     String result = data.getExtras().getString("result");
                     Bitmap bitmap1 = data.getExtras().getParcelable("bitmap");
                     Toast.makeText(this,result,Toast.LENGTH_SHORT).show();
-                    mImageView.setImageBitmap(bitmap1);
+                    if(bitmap1 != null){
+                        mImageView.setImageBitmap(bitmap1);
+                    }
                     break;
 
             }
